@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
 
   def index
-    @users = User.paginate(page: params[:page])
+   @users = User.paginate(page: params[:page])
   end
 
   def show
@@ -41,12 +41,10 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password,:password_confirmation)
     end
-
-    # beforeアクション
-
-  # ログイン済みユーザーか確認
+    
+    # ログイン済みユーザーか確認
     def logged_in_user
       unless logged_in?
         store_location
@@ -61,13 +59,13 @@ class UsersController < ApplicationController
       redirect_to(root_url) unless current_user?(@user)
     end
     
-     def destroy
+    def destroy
     User.find(params[:id]).destroy
     flash[:success] = "削除しました。"
     redirect_to users_url
-     end
-     
-     # 管理者かどうか確認
+    end 
+    
+        # 管理者かどうか確認
     def admin_user
       redirect_to(root_url) unless current_user.admin?
     end
