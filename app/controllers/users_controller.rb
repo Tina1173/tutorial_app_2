@@ -26,9 +26,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
     if @user.update_attributes(user_params)
       flash[:success] = "ユーザー情報を更新しました。"
@@ -37,11 +34,15 @@ class UsersController < ApplicationController
       render 'edit'
     end
   end
+  
+  def edit_basic_info
+   @user = User.find(params[:id])
+  end
 
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password,:password_confirmation)
+      params.require(:user).permit(:name, :email, :department, :password,:password_confirmation)
     end
     
     # ログイン済みユーザーか確認
@@ -60,9 +61,9 @@ class UsersController < ApplicationController
     end
     
     def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "削除しました。"
-    redirect_to users_url
+      User.find(params[:id]).destroy
+      flash[:success] = "削除しました。"
+      redirect_to users_url
     end 
     
         # 管理者かどうか確認
@@ -70,3 +71,4 @@ class UsersController < ApplicationController
       redirect_to(root_url) unless current_user.admin?
     end
 end
+
