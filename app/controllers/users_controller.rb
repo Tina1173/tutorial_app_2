@@ -8,8 +8,16 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-  end
+   @user = User.find(params[:id])
+   @first_day = Date.today.beginning_of_month
+   @last_day = @first_day.end_of_month
+  (@first_day..@last_day).each do |day|
+    unless @user.attendances.any? {|attendance| attendance.worked_on == day}
+      record = @user.attendances.build(worked_on: day)
+      record.save
+  　end
+  　end
+  　end
 
   def new
     @user = User.new
