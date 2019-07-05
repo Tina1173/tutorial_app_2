@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
-  before_action :admin_user,     only: :destroy
-
-  def index
+  before_action :admin_user,     only: [:destroy, :edit_basic_info, :update_basic_info]
+  
+def index
    @users = User.paginate(page: params[:page])
-  end
+end
 
-  def show
+def show
    @user = User.find(params[:id])
    @first_day = Date.today.beginning_of_month
    @last_day = @first_day.end_of_month
@@ -15,15 +15,14 @@ class UsersController < ApplicationController
     unless @user.attendances.any? {|attendance| attendance.worked_on == day}
       record = @user.attendances.build(worked_on: day)
       record.save
-  　end
-  　end
-  　end
+    end
+end
 
-  def new
+def new
     @user = User.new
-  end
+end
 
-  def create
+def create
     @user = User.new(user_params)
     if @user.save
       log_in @user
@@ -32,49 +31,65 @@ class UsersController < ApplicationController
     else
       render 'new'
     end
-  end
+end
 
-  def edit
-  end
-
-  def update
+def update
     if @user.update_attributes(user_params)
       flash[:success] = "ユーザー情報を更新しました。"
       redirect_to @user
     else
       render 'edit'
     end
-  end
+end
 
-  private
+def edit_basic_info
+  @user = User.find(params[:id])
+end
 
-    def user_params
-      params.require(:user).permit(:name, :email, :password,:password_confirmation)
+def update_basic_info
+    @user = User.find(params[:id])
+    if @user.update_attributes(basic_info_params)
+     flash[:success] = "基本情報を更新しました。"
+     redirect_to @user   
+    else
+     render 'edit_basic_info'
     end
-    
+end
+
+private
+  
+def user_params
+    params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
+end
+
+def basic_info_params
+    params.require(:user).permit(:basic_time, :work_time)
+end
+
     # ログイン済みユーザーか確認
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "ログインしてください。"
-        redirect_to login_url
-      end
+def logged_in_user
+    unless logged_in?
+      store_location
+      flash[:danger] = "ログインしてください。"
+      redirect_to login_url
     end
-
-    # 正しいユーザーかどうか確認
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
-    end
+end
     
-    def destroy
+   # 正しいユーザーかどうか確認
+def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_url) unless current_user?(@user)
+end
+
+def destroy
     User.find(params[:id]).destroy
     flash[:success] = "削除しました。"
     redirect_to users_url
-    end 
+end 
     
-        # 管理者かどうか確認
-    def admin_user
-      redirect_to(root_url) unless current_user.admin?
-    end
+    # 管理者かどうか確認
+def admin_user
+    redirect_to(root_url) unless current_user.admin?
+end
+end
 end

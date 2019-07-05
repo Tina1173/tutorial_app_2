@@ -10,6 +10,9 @@ gem 'jquery-rails', '4.3.1'
 gem 'turbolinks',   '5.0.1'
 gem 'jbuilder',     '2.7.0'
 gem 'bootstrap-sass', '3.3.7'
+gem 'faker',                   '1.7.3'
+gem 'will_paginate',           '3.1.6'
+gem 'bootstrap-will_paginate', '1.0.0'
 
 group :development, :test do
   gem 'sqlite3', '1.3.13'
@@ -36,14 +39,10 @@ group :production do
 end
 
 # Windows環境ではtzinfo-dataというgemを含める必要があります
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+#gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+
 # Mac環境でしたら、上のgemはコメントアウトします
 # 対象の行にカーソルがある状態で command + 「/」キー が便利です。
 
-source 'https://rubygems.org'
 
-gem 'rails',                   '5.1.6'
-gem 'bcrypt',                  '3.1.12'
-gem 'faker',                   '1.7.3'
-gem 'will_paginate',           '3.1.6'
-gem 'bootstrap-will_paginate', '1.0.0'
