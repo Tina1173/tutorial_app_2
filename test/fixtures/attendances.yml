@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  worked_on: 2019-06-29
-  started_at: 2019-06-29 02:40:12
-  finished_at: 2019-06-29 02:40:12
+  worked_on: 2019-07-05
+  started_at: 2019-07-05 12:59:04
+  finished_at: 2019-07-05 12:59:04
   note: MyString
   user: one
 
 two:
-  worked_on: 2019-06-29
-  started_at: 2019-06-29 02:40:12
-  finished_at: 2019-06-29 02:40:12
+  worked_on: 2019-07-05
+  started_at: 2019-07-05 12:59:04
+  finished_at: 2019-07-05 12:59:04
   note: MyString
   user: two
