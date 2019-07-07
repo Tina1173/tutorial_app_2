@@ -17,21 +17,24 @@ def show
       record.save
     end
    end
+    @dates = @user.attendances.where('worked_on >= ? and worked_on <= ?', @first_day, @last_day).order('worked_on')
 end
+
 
 def new
     @user = User.new
 end
 
 def create
-    @user = User.new(user_params)
-    if @user.save
-      log_in @user
-      flash[:success] = "ユーザーの新規作成に成功しました。"
-      redirect_to @user
-    else
-      render 'new'
-    end
+  @user = User.find(params[:user_id])
+  @attendance = @user.attendances.find_by(worked_on: Date.today)
+  if @attendance.started_at.nil?
+    @attendance.update_attributes(started_at: current_time)
+    flash[:info] = 'おはようございます。'
+  else
+    flash[:danger] = 'トラブルがあり、登録出来ませんでした。'
+  end
+  redirect_to @user
 end
 
 def update
