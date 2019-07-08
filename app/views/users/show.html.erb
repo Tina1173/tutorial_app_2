@@ -17,7 +17,7 @@
     <tr>
       <td>所属：<%= @user.department.present? ? @user.department : "未設定" %></td>
       <td>氏名：<%= @user.name %></td>
-      <td>出勤日数</td>
+      <td>出勤日数：<%= @worked_sum %>日</td>
       <td>締日　<%= @last_day.to_s(:date) %></td>
     </tr>
   </table>
@@ -61,8 +61,25 @@
           <%= button_to "退社", user_attendances_path(@user), class: "btn btn-xs btn-primary" %>
         <% end %>
       </td>
-      <td></td>
+      <td>
+        <% if day.started_at.present? && day.finished_at.present? %>
+         <%= working_times(day.started_at, day.finished_at) %>
+        <% end %>
+      </td>
       <td></td>
     </tr>
   <% end %>
 </tbody>
+ 
+  <!--!注意！この位置に</table>タグがあるはずです、削除してください-->
+<!--!注意！この位置に</div>タグがあるはずです、これも削除してください-->
+    <tfoot>
+      <tr>
+        <td colspan = "2">総合勤務時間</td>
+        <td colspan = "6"></td>
+        <td>在社時間合計</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
