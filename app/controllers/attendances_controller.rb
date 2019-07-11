@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
 
-def create
+ def create
   @user = User.find(params[:user_id])
   @attendance = @user.attendances.find_by(worked_on: Date.today)
   if @attendance.started_at.nil?
@@ -13,5 +13,12 @@ def create
     flash[:danger] = 'トラブルがあり、登録出来ませんでした。'
   end
   redirect_to @user
-end
+ end
+
+ def edit
+    @user = User.find(params[:id])
+    @first_day = Date.parse(params[:date])
+    @last_day = @first_day.end_of_month
+    @dates = user_attendances_month_date
+ end
 end
